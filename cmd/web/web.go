@@ -14,7 +14,6 @@ func main() {
 	flag.Parse()
 
 	srv, err := web.New(
-		web.WithLogger(web.NoopLogger),
 		web.WithPort(*port),
 	)
 	if err != nil {

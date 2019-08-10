@@ -20,6 +20,7 @@ func New(options ...func(s *Server) error) (*Server, error) {
 	srv := &Server{
 		Port: 8080,
 	}
+	srv.Logger = newLogger()
 
 	for _, opt := range options {
 		if err := opt(srv); err != nil {
