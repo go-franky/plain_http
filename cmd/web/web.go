@@ -14,7 +14,7 @@ func main() {
 	flag.Parse()
 
 	srv, err := web.New(
-		web.WithPort(*port),
+		web.WithLogger(web.BaseLogger),
 	)
 	if err != nil {
 		log.Fatal(err)

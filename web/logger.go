@@ -109,6 +109,9 @@ func (l *defaultLogger) Fatal(i ...interface{}) {
 // NoopLogger is a logger that does not do anything
 var NoopLogger = &defaultNoopLogger
 
+// BaseLogger is a logger that prints all to standard out
+var BaseLogger = newLogger()
+
 type noopLogger struct{}
 
 var defaultNoopLogger noopLogger
