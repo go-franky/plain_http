@@ -38,4 +38,9 @@ windows:
 docker:
 	docker build -t plain_http --build-arg GIT_REVISION=${COMMIT} .
 
-.PHONY: default linux darwin windows test vet fmt clean docker
+# AWS Lambda zip (to be configured with API Gateway)
+lambda:
+	GOOS=linux GOARCH=amd64 go build ${LDFLAGS} -o lambda cmd/lambda/lambda.go
+	zip -j lambda.zip lambda && rm -rf lambda
+
+.PHONY: default linux darwin windows test vet fmt clean docker lambda
