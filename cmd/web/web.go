@@ -21,5 +21,5 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("Starting server on port %d\n", *port)
-	http.ListenAndServe(":"+fmt.Sprintf("%d", *port), srv.Handler)
+	log.Fatal(http.ListenAndServe(":"+fmt.Sprintf("%d", *port), srv.Handler))
 }
