@@ -1,6 +1,7 @@
 package web
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -10,6 +11,18 @@ import (
 func (s *Server) health() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "application/json")
-		fmt.Fprintf(w, fmt.Sprintf(`{"alive":"true","revision":"%s"}`, version.GitRevision))
+		health := struct {
+			Alive    bool   `json:"alive"`
+			Revision string `json:"revision,omitempty"`
+		}{
+			Alive:    true,
+			Revision: version.GitRevision,
+		}
+		data, err := json.Marshal(health)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		fmt.Fprintf(w, string(data))
 	}
 }
