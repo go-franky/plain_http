@@ -1,7 +1,6 @@
 package web
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 )
@@ -11,15 +10,9 @@ const (
 )
 
 type Server struct {
-	Port   int
-	Logger Logger
-}
-
-// Start begins the HTTP server
-func (s *Server) Start() error {
-	s.Logger.Infof("Web server now listing on port %d", s.Port)
-	http.HandleFunc("/", s.Log(s.helloWorld))
-	return http.ListenAndServe(fmt.Sprintf(":%d", s.Port), nil)
+	Port    int
+	Logger  Logger
+	Handler http.Handler
 }
 
 // New creates and initializes a server
@@ -33,6 +26,7 @@ func New(options ...func(s *Server) error) (*Server, error) {
 			return &Server{}, err
 		}
 	}
+	srv.routes()
 
 	return srv, nil
 }
@@ -53,7 +47,7 @@ func WithPort(l int) func(s *Server) error {
 	}
 }
 
-func (s *Server) Log(h http.HandlerFunc) http.HandlerFunc {
+func (s *Server) log(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		startTime := time.Now()
 		h(w, r)

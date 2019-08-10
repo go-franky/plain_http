@@ -105,3 +105,23 @@ func (l *defaultLogger) Fatal(i ...interface{}) {
 	}
 	l.original.Print(is...)
 }
+
+// NoopLogger is a logger that does not do anything
+var NoopLogger = &defaultNoopLogger
+
+type noopLogger struct{}
+
+var defaultNoopLogger noopLogger
+
+func (l *noopLogger) Debugf(string, ...interface{}) {}
+func (l *noopLogger) Debug(...interface{})          {}
+func (l *noopLogger) Infof(string, ...interface{})  {}
+func (l *noopLogger) Info(...interface{})           {}
+func (l *noopLogger) Printf(string, ...interface{}) {}
+func (l *noopLogger) Print(...interface{})          {}
+func (l *noopLogger) Warnf(string, ...interface{})  {}
+func (l *noopLogger) Warn(...interface{})           {}
+func (l *noopLogger) Errorf(string, ...interface{}) {}
+func (l *noopLogger) Error(...interface{})          {}
+func (l *noopLogger) Fatalf(string, ...interface{}) {}
+func (l *noopLogger) Fatal(...interface{})          {}

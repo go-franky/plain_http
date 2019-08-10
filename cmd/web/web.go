@@ -2,20 +2,24 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/go-franky/plain_http/web"
-	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	logger := logrus.New()
 	port := flag.Int("port", 8080, "port to run web server on")
 	flag.Parse()
 
-	srv, err := web.New(web.WithLogger(logger), web.WithPort(*port))
+	srv, err := web.New(
+		web.WithLogger(web.NoopLogger),
+		web.WithPort(*port),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
-	srv.Start()
+	fmt.Printf("Starting server on port %d\n", *port)
+	http.ListenAndServe(":"+fmt.Sprintf("%d", *port), srv.Handler)
 }
