@@ -32,6 +32,7 @@ func main() {
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
+		IdleTimeout: 15 * time.Second,
 	}
 
 	log.Printf("Starting server on port %s\n", s.Addr)
