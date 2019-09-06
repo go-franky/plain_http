@@ -1,0 +1,23 @@
+# .gqlgen.yml example
+#
+# Refer to https://gqlgen.com/config/
+# for detailed .gqlgen.yml documentation.
+
+schema:
+- schema/*.graphql
+exec:
+  filename: graphql/generated.go
+model:
+  filename: graphql/models_gen.go
+models:
+  PageInfo:
+    model: github.com/go-franky/plain_http/api.PageInfo
+  Timestamp:
+    model: github.com/go-franky/plain_http/api.Timestamp
+  Health:
+    model: github.com/go-franky/plain_http/api.Health
+
+
+resolver:
+  filename: graphql/resolver.go
+  type: Resolver

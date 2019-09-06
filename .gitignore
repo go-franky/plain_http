@@ -1,1 +1,4 @@
 plain_http*
+graphql/generated.go
+graphql/models_gen.go
+graphql/resolver.go

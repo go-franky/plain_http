@@ -1,0 +1,68 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+
+"""Time formated according to RFC3339"""
+scalar Timestamp
+
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
+}
+
+interface Node {
+  id: ID!
+}
+
+type Todo implements Node {
+  id: ID!
+  text: String!
+  done: Boolean!
+  user: User!
+  createdAt: Timestamp!
+}
+
+type User {
+  id: ID!
+  name: String!
+}
+
+type Health {
+  alive: Boolean!
+  gitSha: String
+  goversion: String!
+}
+
+type Query {
+  health: Health!
+  todos: [Todo!]!
+}
+
+input NewTodo {
+  text: String!
+  userId: String!
+}
+
+type Mutation {
+  createTodo(input: NewTodo!): Todo!
+}
+
+
