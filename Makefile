@@ -35,4 +35,7 @@ windows:
 	GOOS=windows GOARCH=${GOARCH} go build ${LDFLAGS} -o ${BINARY}-windows-${GOARCH}.exe cmd/web/web.go ; \
 	cd - >/dev/null
 
-.PHONY: default linux darwin windows test vet fmt clean
+docker:
+	docker build -t plain_http --build-arg GIT_REVISION=${COMMIT} .
+
+.PHONY: default linux darwin windows test vet fmt clean docker
