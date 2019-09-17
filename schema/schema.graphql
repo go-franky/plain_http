@@ -49,6 +49,7 @@ type Health {
   alive: Boolean!
   gitSha: String
   goversion: String!
+  timestamp: Timestamp!
 }
 
 type Query {
