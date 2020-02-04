@@ -9,13 +9,16 @@ const (
 	timeFormat = "2006-01-02T15:04:05.000Z"
 )
 
+// Option configures a Server.
+type Option func(s *Server) error
+
 type Server struct {
 	logger  Logger
 	Handler http.Handler
 }
 
 // New creates and initializes a server
-func New(options ...func(s *Server) error) (*Server, error) {
+func New(options ...Option) (*Server, error) {
 	srv := &Server{
 		logger: NoopLogger,
 	}
@@ -31,7 +34,7 @@ func New(options ...func(s *Server) error) (*Server, error) {
 }
 
 // WithLogger defines a logger for the server
-func WithLogger(l Logger) func(s *Server) error {
+func WithLogger(l Logger) Option {
 	return func(s *Server) error {
 		s.logger = l
 		return nil
