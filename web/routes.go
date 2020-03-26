@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/go-franky/plain_http/graphql"
@@ -18,6 +19,11 @@ func (s *Server) routes() {
 		graphql.NewExecutableSchema(graphql.Config{Resolvers: &graphql.Resolver{}}),
 	)
 	gql.AddTransport(transport.POST{})
+	if s.cache != nil {
+		gql.Use(extension.AutomaticPersistedQuery{
+			Cache: s.cache,
+		})
+	}
 	router.HandleFunc("/graphql", s.log(func(w http.ResponseWriter, r *http.Request) {
 		gql.ServeHTTP(w, r)
 	}))

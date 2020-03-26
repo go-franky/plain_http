@@ -11,15 +11,26 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/go-franky/plain_http/graphql/cache/redis"
 	"github.com/go-franky/plain_http/web"
 )
 
 func main() {
 	port := flag.Int("port", 8080, "port to run web server on")
+	redisURL := flag.String("redis-url", "localhost:6379", "redis URL for persisted query cache")
+	redisPassword := flag.String("redis-password", "", "redis password for persisted query cache")
 	flag.Parse()
+
+	gqlCache, err := redis.New(*redisURL, *redisPassword, 5*time.Minute)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_ = gqlCache
 
 	srv, err := web.New(
 		web.WithLogger(web.BaseLogger),
+		web.SetGraphQLCache(gqlCache),
 	)
 
 	if err != nil {
@@ -32,7 +43,7 @@ func main() {
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
-		IdleTimeout: 15 * time.Second,
+		IdleTimeout:  15 * time.Second,
 	}
 
 	log.Printf("Starting server on port %s\n", s.Addr)
