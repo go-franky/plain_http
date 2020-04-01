@@ -2,6 +2,7 @@ module github.com/go-franky/plain_http
 
 require (
 	github.com/99designs/gqlgen v0.11.3
+	github.com/gorilla/mux v1.6.1
 	github.com/sirupsen/logrus v1.2.0
 	github.com/urfave/cli v1.20.0 // indirect
 	github.com/vektah/gqlparser v1.3.1
