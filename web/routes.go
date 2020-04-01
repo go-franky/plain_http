@@ -4,9 +4,11 @@ import (
 	"net/http"
 
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/debug"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/go-franky/plain_http/graphql"
+	"github.com/go-franky/plain_http/pq"
 )
 
 func (s *Server) routes() {
@@ -18,9 +20,14 @@ func (s *Server) routes() {
 		graphql.NewExecutableSchema(graphql.Config{Resolvers: &graphql.Resolver{}}),
 	)
 	gql.AddTransport(transport.POST{})
+	gql.Use(&debug.Tracer{})
 	router.HandleFunc("/graphql", s.log(func(w http.ResponseWriter, r *http.Request) {
 		gql.ServeHTTP(w, r)
 	}))
+
+	pq, _ := pq.New()
+
+	router.HandleFunc("/pq/clients/new", pq.AddClient())
 
 	s.Handler = router
 }
