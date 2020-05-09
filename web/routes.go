@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/go-franky/plain_http/graphql"
@@ -15,8 +16,13 @@ func (s *Server) routes() {
 	router.HandleFunc("/health", s.log(s.health()))
 	router.HandleFunc("/graphiql", playground.Handler("GraphQL playground", "/graphql"))
 	gql := handler.New(
-		graphql.NewExecutableSchema(graphql.Config{Resolvers: &graphql.Resolver{}}),
+		graphql.NewExecutableSchema(
+			graphql.Config{
+				Resolvers: &graphql.Resolver{},
+			},
+		),
 	)
+	gql.Use(extension.Introspection{})
 	gql.AddTransport(transport.POST{})
 	router.HandleFunc("/graphql", s.log(func(w http.ResponseWriter, r *http.Request) {
 		gql.ServeHTTP(w, r)
