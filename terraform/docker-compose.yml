@@ -1,0 +1,10 @@
+version: '3'
+services:
+  terraform:
+    image: hashicorp/terraform:0.14.6
+    working_dir: /terraform
+    env_file: .env
+    volumes:
+      - "./:/terraform"
+      - "~/.aws/credentials:/root/.aws/credentials:ro"
+      - "~/.aws/config:/root/.aws/config:ro"

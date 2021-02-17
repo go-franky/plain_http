@@ -1,0 +1,15 @@
+_Store
+
+# Docker build
+docker-compose.override.yml
+.env
+
+# Terraform
+.terraform
+**/.terraform
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfplan
+**/*.tfplan
+.terraform.d/
+crash.log
